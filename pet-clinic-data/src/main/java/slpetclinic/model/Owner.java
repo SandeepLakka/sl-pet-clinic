@@ -1,4 +1,4 @@
-package com.springlearn.slpetclinic.model;
+package slpetclinic.model;
 
 import lombok.Data;
 
