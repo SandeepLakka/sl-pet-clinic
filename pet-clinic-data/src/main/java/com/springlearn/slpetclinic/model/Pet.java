@@ -1,4 +1,4 @@
-package slpetclinic.model;
+package com.springlearn.slpetclinic.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
