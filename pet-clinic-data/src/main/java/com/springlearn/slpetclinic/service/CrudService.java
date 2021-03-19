@@ -6,7 +6,7 @@ public interface CrudService<T,ID> {
 
     T findById(ID id);
 
-    T save(T owner);
+    T save(T object);
 
     void delete(T object);
 
