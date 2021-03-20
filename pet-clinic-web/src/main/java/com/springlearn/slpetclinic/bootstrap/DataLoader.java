@@ -4,8 +4,6 @@ import com.springlearn.slpetclinic.model.Owner;
 import com.springlearn.slpetclinic.model.Vet;
 import com.springlearn.slpetclinic.service.OwnerService;
 import com.springlearn.slpetclinic.service.VetService;
-import com.springlearn.slpetclinic.service.map.OwnerServiceMap;
-import com.springlearn.slpetclinic.service.map.VetServiceMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -17,10 +15,12 @@ public class DataLoader implements CommandLineRunner {
     private final OwnerService ownerService;
     private final VetService vetService;
 
-    public DataLoader() {
-        ownerService = new OwnerServiceMap();
-        vetService = new VetServiceMap();
+    //@Autowired : Not needed as Spring implicitly takes if the class has single constructor
+    public DataLoader(OwnerService ownerService, VetService vetService) {
+        this.ownerService = ownerService;
+        this.vetService = vetService;
     }
+
 
     @Override
     public void run(String... args) throws Exception {
