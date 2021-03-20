@@ -1,11 +1,11 @@
 package com.springlearn.slpetclinic.service.map;
 
 import com.springlearn.slpetclinic.model.Owner;
-import com.springlearn.slpetclinic.service.CrudService;
+import com.springlearn.slpetclinic.service.OwnerService;
 
 import java.util.Set;
 
-public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements CrudService<Owner, Long> {
+public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements OwnerService {
 
     @Override
     public Owner findById(Long id) {
@@ -30,5 +30,12 @@ public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements 
     @Override
     public Set<Owner> findAll() {
         return super.findAll();
+    }
+
+    @Override
+    public Owner findByLastName(String lastName) {
+        return super.findAll().stream().filter(
+                owner -> owner.getLastName().equals(lastName))
+                .findFirst().orElse(null);
     }
 }
