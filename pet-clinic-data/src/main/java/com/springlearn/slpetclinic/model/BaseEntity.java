@@ -1,13 +1,11 @@
 package com.springlearn.slpetclinic.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.io.Serializable;
 
-
+@Data
 public class BaseEntity implements Serializable {
-    @Getter
-    @Setter
+
     private Long id;
 }

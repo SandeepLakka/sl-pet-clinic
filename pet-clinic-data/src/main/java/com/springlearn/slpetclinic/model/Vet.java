@@ -1,7 +1,8 @@
 package com.springlearn.slpetclinic.model;
 
-import lombok.Data;
+import lombok.ToString;
 
-@Data
+@ToString(callSuper = true)
 public class Vet extends Person {
+
 }
