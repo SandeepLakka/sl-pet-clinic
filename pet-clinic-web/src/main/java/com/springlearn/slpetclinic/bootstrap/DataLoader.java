@@ -42,9 +42,9 @@ public class DataLoader implements CommandLineRunner {
         //TODO: Have builder implementation of these types
         createPetTypes();
 
-        createPets();
-
         createOwners();
+
+        createPets();
 
         createVets();
 
@@ -53,35 +53,47 @@ public class DataLoader implements CommandLineRunner {
     private void createPets() {
         Map<String, PetType> petTypeMap = petTypeService.findAll().stream().collect(
                 Collectors.toMap(o -> o.getName(), Function.identity()));
+
+        Owner meghanath = ownerService.findByLastName("Meghanath");
+        Owner tanush = ownerService.findByLastName("Tanush");
+
         Pet dog1 = new Pet();
         dog1.setPetType(petTypeMap.get("Dog"));
+        dog1.setName("Snoopy");
         dog1.setBirthDate(LocalDate.now());
-        dog1.setOwner(ownerService.findByLastName("Meghanath"));
+        dog1.setOwner(meghanath);
+        meghanath.getPets().add(dog1);
 
         petService.save(dog1);
 
         Pet dog2 = new Pet();
         dog2.setPetType(petTypeMap.get("Dog"));
+        dog2.setName("Jimmy");
         dog2.setBirthDate(LocalDate.now().minusMonths(1));
-        dog2.setOwner(ownerService.findByLastName("Meghanath"));
+        dog2.setOwner(meghanath);
+        meghanath.getPets().add(dog2);
 
         petService.save(dog2);
 
         Pet cat1 = new Pet();
         cat1.setPetType(petTypeMap.get("Cat"));
+        cat1.setName("Kitty");
         cat1.setBirthDate(LocalDate.now().minusWeeks(2));
-        cat1.setOwner(ownerService.findByLastName("Tanush"));
+        cat1.setOwner(tanush);
+        tanush.getPets().add(cat1);
 
         petService.save(cat1);
 
         Pet cat2 = new Pet();
         cat2.setPetType(petTypeMap.get("Cat"));
+        cat2.setName("Dolly");
         cat2.setBirthDate(LocalDate.now().minusWeeks(1));
-        cat2.setOwner(ownerService.findByLastName("Tanush"));
+        cat2.setOwner(tanush);
+        tanush.getPets().add(cat2);
 
         petService.save(cat2);
 
-        log.info("Loaded pets... {}",petService.findAll());
+        log.info("Loaded pets...");
 
     }
 
@@ -98,7 +110,7 @@ public class DataLoader implements CommandLineRunner {
 
         vetService.save(vet2);
 
-        log.info("Loaded vets... {}",vetService.findAll());
+        log.info("Loaded vets...");
     }
 
     private void createOwners() {
@@ -120,7 +132,7 @@ public class DataLoader implements CommandLineRunner {
 
         ownerService.save(owner2);
 
-        log.info("Loaded Owners... {}",ownerService.findAll());
+        log.info("Loaded Owners...");
     }
 
     private void createPetTypes() {
@@ -132,7 +144,7 @@ public class DataLoader implements CommandLineRunner {
         cat.setName("Cat");
         petTypeService.save(cat);
 
-        log.info("Loaded PetTypes... {}", petTypeService.findAll());
+        log.info("Loaded PetTypes...");
     }
 
 }
