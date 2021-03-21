@@ -1,13 +1,7 @@
 package com.springlearn.slpetclinic.bootstrap;
 
-import com.springlearn.slpetclinic.model.Owner;
-import com.springlearn.slpetclinic.model.Pet;
-import com.springlearn.slpetclinic.model.PetType;
-import com.springlearn.slpetclinic.model.Vet;
-import com.springlearn.slpetclinic.service.OwnerService;
-import com.springlearn.slpetclinic.service.PetService;
-import com.springlearn.slpetclinic.service.PetTypeService;
-import com.springlearn.slpetclinic.service.VetService;
+import com.springlearn.slpetclinic.model.*;
+import com.springlearn.slpetclinic.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -25,14 +19,16 @@ public class DataLoader implements CommandLineRunner {
     private final VetService vetService;
     private final PetTypeService petTypeService;
     private final PetService petService;
+    private final SpecialityService specialityService;
 
     //@Autowired : Not needed as Spring implicitly takes if the class has single constructor
     public DataLoader(OwnerService ownerService, VetService vetService,
-                      PetTypeService petTypeService, PetService petService) {
+                      PetTypeService petTypeService, PetService petService, SpecialityService specialityService) {
         this.ownerService = ownerService;
         this.vetService = vetService;
         this.petTypeService = petTypeService;
         this.petService = petService;
+        this.specialityService = specialityService;
     }
 
 
@@ -46,8 +42,29 @@ public class DataLoader implements CommandLineRunner {
 
         createPets();
 
+        createSpecialities();
+
         createVets();
 
+    }
+
+    private void createSpecialities() {
+        Speciality radiology = new Speciality();
+        radiology.setDescription("Radiology");
+
+        specialityService.save(radiology);
+
+        Speciality surgery = new Speciality();
+        surgery.setDescription("Surgery");
+
+        specialityService.save(surgery);
+
+        Speciality dentistry = new Speciality();
+        dentistry.setDescription("Dentistry");
+
+        specialityService.save(dentistry);
+
+        log.info("Loaded Specialities...");
     }
 
     private void createPets() {
@@ -93,24 +110,29 @@ public class DataLoader implements CommandLineRunner {
 
         petService.save(cat2);
 
-        log.info("Loaded pets...");
+        log.info("Loaded Pets...");
 
     }
 
     private void createVets() {
+
+        Map<String, Speciality> specialityMap = specialityService.findAll().stream()
+                .collect(Collectors.toMap(o -> o.getDescription(), Function.identity()));
         Vet vet1 = new Vet();
         vet1.setFirstName("Chinnodu");
         vet1.setLastName("Chalaki");
+        vet1.getSpecialities().add(specialityMap.get("Radiology"));
 
         vetService.save(vet1);
 
         Vet vet2 = new Vet();
         vet2.setFirstName("Peddhodu");
         vet2.setLastName("Penki");
+        vet2.getSpecialities().addAll(specialityMap.values());
 
         vetService.save(vet2);
 
-        log.info("Loaded vets...");
+        log.info("Loaded Vets...");
     }
 
     private void createOwners() {
