@@ -36,6 +36,16 @@ public class DataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         //TODO: Have builder implementation of these types
+        int count = specialityService.findAll().size();
+
+        //Only load when fresh run : Is nice when we have JPA impl on top of existing Map impl
+        if(count == 0) {
+            loadData();
+        }
+
+    }
+
+    private void loadData() {
         createPetTypes();
 
         createOwners();
@@ -45,7 +55,6 @@ public class DataLoader implements CommandLineRunner {
         createSpecialities();
 
         createVets();
-
     }
 
     private void createSpecialities() {
@@ -118,6 +127,7 @@ public class DataLoader implements CommandLineRunner {
 
         Map<String, Speciality> specialityMap = specialityService.findAll().stream()
                 .collect(Collectors.toMap(o -> o.getDescription(), Function.identity()));
+
         Vet vet1 = new Vet();
         vet1.setFirstName("Chinnodu");
         vet1.setLastName("Chalaki");
